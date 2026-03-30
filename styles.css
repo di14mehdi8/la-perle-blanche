@@ -17,6 +17,7 @@
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --nav-h:        84px;
+  --nav-h-top:    230px;
   --max-w:        1160px;
   --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
 }
@@ -45,27 +46,65 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  height: var(--nav-h);
-  background: rgba(255,255,255,0.94);
+  /* Starts tall — shrinks to --nav-h on scroll */
+  height: var(--nav-h-top);
+  background: rgba(255,255,255,0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.4s var(--ease);
+  transition: height 0.6s var(--ease), border-color 0.4s var(--ease);
 }
-#navbar.scrolled { border-bottom-color: var(--border-light); }
+#navbar.scrolled {
+  height: var(--nav-h);
+  border-bottom-color: var(--border-light);
+}
 
+/* Inner is the positioning context for logo + lang */
 .nav-inner {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 40px;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: relative;
+}
+
+/* ── Logo: centered at full size, left when scrolled ── */
+.nav-logo {
+  position: absolute;
+  /* Centered horizontally & vertically within nav-inner */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* Smooth glide on all changing properties */
+  transition:
+    left      0.6s var(--ease),
+    transform 0.6s var(--ease);
 }
 
 .nav-logo a { display: flex; }
-.nav-logo img { height: 68px; width: auto; object-fit: contain; }
+
+.nav-logo img {
+  height: 200px;       /* ~3× the scrolled 68px */
+  width: auto;
+  object-fit: contain;
+  transition: height 0.6s var(--ease);
+}
+
+/* Scrolled: logo slides to the left edge and shrinks */
+#navbar.scrolled .nav-logo {
+  left: 40px;
+  transform: translate(0, -50%);
+}
+#navbar.scrolled .nav-logo img {
+  height: 68px;
+}
+
+/* ── Lang toggle: always pinned to right ── */
+.nav-right {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 .lang-toggle { display: flex; align-items: center; gap: 6px; }
 .lang-btn {
@@ -94,7 +133,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-h) + 80px) 32px 100px;
+  padding: calc(var(--nav-h-top) + 40px) 32px 100px;
   background: var(--white);
   overflow: hidden;
 }
@@ -559,7 +598,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
    RESPONSIVE
    ══════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .nav-inner { padding: 0 28px; }
+  #navbar.scrolled .nav-logo { left: 28px; }
+  .nav-right { right: 28px; }
   .section-inner { padding: 0 28px; }
 
   .services-grid {
@@ -570,13 +610,18 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 @media (max-width: 768px) {
-  :root { --nav-h: 60px; }
+  :root {
+    --nav-h:     60px;
+    --nav-h-top: 150px;
+  }
 
-  .nav-inner { padding: 0 20px; }
-  .nav-logo img { height: 52px; }
+  .nav-logo img { height: 120px; }
+  #navbar.scrolled .nav-logo img { height: 46px; }
+  #navbar.scrolled .nav-logo { left: 20px; }
+  .nav-right { right: 20px; }
   .section-inner { padding: 0 20px; }
 
-  #hero { padding: calc(var(--nav-h) + 60px) 20px 80px; }
+  #hero { padding: calc(var(--nav-h-top) + 20px) 20px 80px; }
   .hero-bg img { width: 90%; opacity: 0.05; }
   .hero-title { letter-spacing: 0.03em; }
 
