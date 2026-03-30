@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://di14mehdi8.github.io/la-perle-blanche/sitemap.xml
