@@ -17,7 +17,7 @@
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --nav-h:        84px;
-  --nav-h-top:    230px;
+  --nav-h-top:    440px;
   --max-w:        1160px;
   --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
 }
@@ -83,7 +83,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .nav-logo a { display: flex; }
 
 .nav-logo img {
-  height: 200px;       /* ~3× the scrolled 68px */
+  height: 400px;       /* ~6× the scrolled 68px */
   width: auto;
   object-fit: contain;
   transition: height 0.6s var(--ease);
@@ -612,10 +612,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 @media (max-width: 768px) {
   :root {
     --nav-h:     60px;
-    --nav-h-top: 150px;
+    --nav-h-top: 280px;
   }
 
-  .nav-logo img { height: 120px; }
+  .nav-logo img { height: 240px; }
   #navbar.scrolled .nav-logo img { height: 46px; }
   #navbar.scrolled .nav-logo { left: 20px; }
   .nav-right { right: 20px; }
